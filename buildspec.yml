@@ -1,0 +1,30 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+      - echo "No installation needed for static website"
+  pre_build:
+    commands:
+      - echo "Preparing the environment..."
+      - ls  # Confirm the project structure, ensuring index.html is present
+  build:
+    commands:
+      - echo "Building the project..."
+      - echo "Processing index.html"
+      - cat index.html  # Output the content of index.html to confirm it's available
+      - echo "Hello from the build stage!"
+  post_build:
+    commands:
+      - echo "Build complete!"
+      - ls  # Confirm final structure
+      - echo "Uploading index.html to S3"
+      # Upload index.html to your S3 bucket for static website hosting
+      - aws s3 cp index.html s3://emaansbucket/index.html --region N.Virginia
+
+artifacts:
+  files:
+    - '**/*'  # Include all files in the output artifact, useful for future builds
+  discard-paths: yes  # Flattens the file structure, useful for single-file deployments
+
+
